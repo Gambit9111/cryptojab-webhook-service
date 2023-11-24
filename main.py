@@ -3,7 +3,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 
-from config import DB_URL, STRIPE_API_KEY, STRIPE_ENDPOINT_SECRET, COINBASE_API_KEY, COINBASE_ENDPOINT_SECRET
+from config import DB_URL, STRIPE_API_KEY, STRIPE_ENDPOINT_SECRET, COINBASE_ENDPOINT_SECRET
 
 import stripe
 
