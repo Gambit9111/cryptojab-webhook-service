@@ -22,14 +22,16 @@ class Users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     telegram_id = db.Column(db.BigInteger, unique=True, nullable=False)
     payment_method = db.Column(db.Enum('stripe', 'coinbase', name="payment_method"), nullable=False)
+    subscription_id = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow().replace(microsecond=0), nullable=False)
     valid_until = db.Column(db.DateTime, nullable=False)
     generated_invite_link = db.Column(db.Boolean, default=False)
 
 
-    def __init__(self, telegram_id, payment_method, valid_until):
+    def __init__(self, telegram_id, payment_method, subscription_id, valid_until):
         self.telegram_id = telegram_id
         self.payment_method = payment_method
+        self.subscription_id = subscription_id
         self.valid_until = valid_until
 
     def __repr__(self):
@@ -89,7 +91,7 @@ def stripe_webhook():
             
         else:
             print("Creating new user" + str(telegram_id))
-            usr = Users(telegram_id, payment_method, valid_until)
+            usr = Users(telegram_id, payment_method, subscription_id, valid_until)
             db.session.add(usr)
             db.session.commit()
     
