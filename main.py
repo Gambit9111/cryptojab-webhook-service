@@ -99,29 +99,29 @@ def stripe_webhook():
     return jsonify(success=True)
 
 
-@app.route('/coinbase/webhook', methods=['POST'])
-def coinbase_webhook():
+# @app.route('/coinbase/webhook', methods=['POST'])
+# def coinbase_webhook():
 
-    # coinbase stuff
-    request_data = request.data.decode('utf-8')
-    # webhook signature verification
-    request_sig = request.headers.get('X-CC-Webhook-Signature', None)
+#     # coinbase stuff
+#     request_data = request.data.decode('utf-8')
+#     # webhook signature verification
+#     request_sig = request.headers.get('X-CC-Webhook-Signature', None)
 
-    try:
-        # signature verification and event object construction
-        event = Webhook.construct_event(request_data, request_sig, COINBASE_ENDPOINT_SECRET)
-    except (WebhookInvalidPayload, SignatureVerificationError) as e:
-        return str(e), 400
+#     try:
+#         # signature verification and event object construction
+#         event = Webhook.construct_event(request_data, request_sig, COINBASE_ENDPOINT_SECRET)
+#     except (WebhookInvalidPayload, SignatureVerificationError) as e:
+#         return str(e), 400
 
-    print("Received event: id={id}, type={type}".format(id=event.id, type=event.type))
-    # print(event["data"]["description"])
+#     print("Received event: id={id}, type={type}".format(id=event.id, type=event.type))
+#     # print(event["data"]["description"])
 
-    if event.type == 'charge:confirmed':
-        print(event["data"])
-        telegram_id = event["data"]["description"]
-        print(telegram_id, "telegram_id just bought a sub")
+#     if event.type == 'charge:confirmed':
+#         print(event["data"])
+#         telegram_id = event["data"]["description"]
+#         print(telegram_id, "telegram_id just bought a sub")
     
-    return jsonify(success=True)
+#     return jsonify(success=True)
 
 
 if __name__ == '__main__':
