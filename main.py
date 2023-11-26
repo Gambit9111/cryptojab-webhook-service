@@ -3,14 +3,14 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta, timezone
 
-from config import DB_URL, STRIPE_API_KEY, STRIPE_ENDPOINT_SECRET
+from config import DB_URL, STRIPE_API_KEY, STRIPE_ENDPOINT_SECRET, FLASK_APP_SECRET_KEY
 
 import stripe
 
 stripe.api_key=STRIPE_API_KEY
 
 app = Flask(__name__)
-app.secret_key="sdklwadlkmdkl"
+app.secret_key=FLASK_APP_SECRET_KEY # ! TODO
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
