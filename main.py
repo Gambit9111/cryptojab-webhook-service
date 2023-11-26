@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import json
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from config import DB_URL, STRIPE_API_KEY, STRIPE_ENDPOINT_SECRET
 
@@ -23,7 +23,7 @@ class Users(db.Model):
     telegram_id = db.Column(db.BigInteger, unique=True, nullable=False)
     payment_method = db.Column(db.Enum('stripe', 'coinbase', name="payment_method"), nullable=False)
     subscription_id = db.Column(db.String(255), nullable=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow().replace(microsecond=0), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     valid_until = db.Column(db.DateTime, nullable=False)
     generated_invite_link = db.Column(db.Boolean, default=False)
 
@@ -77,7 +77,7 @@ def stripe_webhook():
         subscription_id = str(invoice_payment['subscription'])
         user_email = invoice_payment['customer_email']
         payment_method = "stripe"
-        valid_until = (datetime.utcnow() + timedelta(days=subscription_duration)).replace(microsecond=0)
+        valid_until = datetime.now(timezone.utc) + timedelta(days=subscription_duration)
         
         
         print (f"🔔  New payment from {user_email} for {str(subscription_duration)} months" + str(telegram_id) + subscription_id)
